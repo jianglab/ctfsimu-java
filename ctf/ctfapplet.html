@@ -1,0 +1,90 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.16-9mdk i686) [Netscape]">
+   <title>CTF Simulation</title>
+<script SRC="control.js" type="text/javascript"></script>
+</head>
+<body bgcolor="#FFFFFF" onLoad="ReadFromCookie();InitSelectScope(document.forms[0].selectscope);focus()" onUnLoad="StoreToCookie()" onBlur="StoreToCookie()" onResize="window.location.href = window.location.href;">
+
+<center>		
+<script>
+<!--
+SetupApplet();
+// -->
+</script>
+</center>
+<form name="control">
+<center>
+Select microscope:&nbsp;<select size="1" name="selectscope" onChange="setScope(this)">
+</select>
+
+<input type="button" name="save" value="Save" onClick="SaveScope(document.forms[0].selectscope)">
+
+<input type="button" name="add" value="Add" onClick="AddScope(document.forms[0].selectscope)">
+
+<input type="button" name="remove" value="Remove" onClick="RemoveScope(document.forms[0].selectscope)">
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+Select function:&nbsp;<select size="1" name="selectfunction" onChange="setFunction(this.form)">
+<option selected value="ctf(s,v,Cs,dZ,Q)">CTF</option>
+<option value="Gau(s,B)">Gaussian: B factor decay</option>
+<option value="Gsc(s,v,Cs,dZ,a)">Spatial: illumination angle decay</option>
+<option value="Gtc(s,v,Cc,dE)">Temporal: voltage variation decay</option>
+<option value="Gol(s,v,Cc,dI)">Temporal: object lens current variation decay</option>
+<option value="Glm(s,v,dF)">Vertical motion decay</option><option value="Gtm(s,dR)">Horizontal drift decay</option>
+<option value="ctf(s,v,Cs,dZ,Q)*Gau(s,B)">CTF * Gaussian: B factor decay</option>
+<option value="ctf(s,v,Cs,dZ,Q)*Gsc(s,v,Cs,dZ,a)">CTF * Spatial: illumination angle decay</option>
+<option value="ctf(s,v,Cs,dZ,Q)*Gtc(s,v,Cc,dE)">CTF * Temporal: voltage variation decay</option>
+<option value="ctf(s,v,Cs,dZ,Q)*Gol(s,v,Cc,dI)">CTF * Temporal: lens current variation decay</option>
+<option value="ctf(s,v,Cs,dZ,Q)*Glm(s,v,dF)">CTF * Vertical motion decay</option>
+<option value="ctf(s,v,Cs,dZ,Q)*Gtm(s,dR)">CTF * Drift decay</option>
+<option value="ctf(s,v,Cs,dZ,Q)*Gsc(s,v,Cs,dZ,a)*Gtc(s,v,Cc,dE)*Gol(s,v,Cc,dI)*Glm(s,v,dF)*Gtm(s,dR)">CTF * All decays</option>
+</select><input type="button" name="showinfo" value="Hide Info" onClick="setInfoVisible(this.form)">
+
+</center>
+
+<p>
+<center><table BORDER="1" WIDTH="100%" NOSAVE >
+<tr NOSAVE>
+<td align="center" valign="middle" width="8%"><input type="button" name="add" value="+" onClick="editFunction(this.form,this.form.add)"></td>
+<td align="center" valign="middle" width="8%"><input type="button" name="sub" value="-" onClick="editFunction(this.form,this.form.sub)"></td>
+<td align="center" valign="middle" width="8%"><input type="button" name="mult" value="*" onClick="editFunction(this.form,this.form.mult)"></td>
+<td align="center" valign="middle" width="8%"><input type="button" name="div" value="/" onClick="editFunction(this.form,this.form.div)"></td>
+<td align="center" valign="middle" width="8%"><input type="button" name="lp" value="(" onClick="editFunction(this.form,this.form.lp)"></td>
+<td align="center" valign="middle" width="8%"><input type="button" name="rp" value=")" onClick="editFunction(this.form,this.form.rp)"></td>
+<td align="center" valign="middle" rowspan=4 nosave>
+Xmin=<input type="text" name="xmin" size=5 value="0">&nbsp;&nbsp;
+Xmax=<input type="text" name="xmax" size=5 value="0.1">&nbsp;&nbsp; Number
+of Points=<input type="text" name="numpoints" size=5 value="100">
+<input type="button" name="getPts" value="Get Curve Data" onClick="getGraphPoints(this.form)">
+<br><textarea name="pointDisplay" readonly rows=10 cols=40></textarea>
+</td>
+</tr>
+<tr>
+<td align="center" valign="middle" colspan=2><input type="button" name="int" value="(...)^2" onClick="setIntensity(this.form)"></td>
+<td align="center" valign="middle" colspan=2><input type="button" name="gsc" value="Gsc(s,v,Cs,dZ,a)" onClick="editFunction(this.form,this.form.gsc)"></td>
+<td align="center" valign="middle" colspan=2><input type="button" name="gtc" value="Gtc(s,v,Cc,dE)" onClick="editFunction(this.form,this.form.gtc)"></td>
+</tr>
+<tr>
+<td align="center" valign="middle" colspan=2><input type="button" name="gol" value="Gol(s,v,Cc,dI)" onClick="editFunction(this.form,this.form.gol)"></td>
+<td align="center" valign="middle" colspan=2><input type="button" name="glm" value="Glm(s,v,dF)" onClick="editFunction(this.form,this.form.glm)"></td>
+<td align="center" valign="middle" colspan=2><input type="button" name="gtm" value="Gtm(s,dR)" onClick="editFunction(this.form,this.form.gtm)"></td>
+</tr>
+<tr>
+<td align="center" valign="middle" colspan=2><input type="button" name="gau" value="Gau(s,B)" onClick="editFunction(this.form,this.form.gau)"></td>
+<td align="center" valign="middle" colspan=2><input type="button" name="gamma" value="gamma(s,v,Cs,dZ)" onClick="editFunction(this.form,this.form.gamma)"></td>
+<td align="center" valign="middle" colspan=2><input type="button" name="ctf" value="ctf(s,v,Cs,dZ,Q)" onClick="editFunction(this.form,this.form.ctf)"></td>
+</tr>
+</table>
+
+<a href="mailto:jiang12@purdue.edu">E-mail me</a>     &nbsp;&nbsp;   &nbsp;&nbsp;
+<input type="button" name="another" value="Start another applet" onClick='window.open("ctfapplet.html","","menubar=yes,location=no,toolbar=no,resizable=yes,scrollbars=yes")'>     &nbsp;&nbsp;   &nbsp;&nbsp;
+&nbsp;&nbsp;   &nbsp;&nbsp;
+<input type="button" name="doc" value="Document" onClick='window.open("http://jiang.bio.purdue.edu/ctfsimu","doc")'>     &nbsp;&nbsp;   &nbsp;&nbsp;
+&nbsp;&nbsp;   &nbsp;&nbsp;
+<input type="button" name="close" value="Close" onClick="window.close()">  </form>
+</center>
+</body>
+</html>

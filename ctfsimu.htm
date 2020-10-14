@@ -1,0 +1,422 @@
+<body width=95% topmargin="0" onLoad="open('ctf/ctfapplet.html','ctfapplet','menubar=yes,location=no,toolbar=no,resizable=yes,scrollbars=yes',true)">
+
+<script SRC="control.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+CheckBrowser();
+// -->
+</script>
+
+<center>
+<h1><b><font color="#3333FF"><font size=+4>CTF Simulation</font></font></b></h1>
+<p><p>
+<form><input type="button" name="start" value="Start Applet" onClick='open("ctf/ctfapplet.html","ctfapplet","menubar=yes,location=no,toolbar=no,resizable=yes,scrollbars=yes")'>
+</form>
+</center>
+
+<p><p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>NOTE 1: New Web browsers are dropping Java support. If this CTF applet does not work, please use this page to <a href="https://www.java.com/verify">Verify Java Support</a></b> <br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>NOTE 2: You need to disable pop-up blocking of this site to run the CTF simulation Java applet. You might also need to add a security exception in your Java settings for this site</b> <br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Please cite:</b> <a href="https://www.researchgate.net/publication/10890212_Web-based_Simulation_for_Contrast_Transfer_Function_and_Envelope_Functions
+">Web-based Simulation for Contrast Transfer Function and Envelope Functions</a>. Microscopy and Microanalysis 7(4), 329-334, 2001
+<p>
+<font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contrast
+of an ectron image is influenced by the contrast transfer function (CTF)
+and the envelope functions of the electron microscope. In order to plan
+an experimental condition for data collection or to interpret the contrast
+of an electron micrograph, one would often need to know the quantitative
+values of these functions for a given set of microscope parameters. This
+simulation program is written in <a href="http://java.sun.com">Java</a>
+applet and <a href="http://developer.netscape.com/docs/manuals/communicator/jsguide4/index.htm">JavaScript</a>
+programming language. The parameters of these functions can be adjusted
+interactively with slider bars and the plot for the simulated function
+would be updated instantaneously.
+
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This applet is known to run on Windows (Netscape and Internet Explorer), Linux (i386) (Netscape), SGI IRIX (Netscape), OS/2 Warp and MacOS X. Please inform me if you found that 
+this applet runs or has problems to run on other platforms.
+</font>
+
+<br><font color="#000000">&nbsp;</font>
+<br><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+following is the detailed descriptions for some aspects of the applet page.</font>
+<center>
+<p><b><font size=+2>List of the special symbols/functions used in the applet</font></b></center>
+
+<center><table BORDER WIDTH="95%" NOSAVE >
+<tr>
+<td><b>&nbsp;Term</b></td>
+
+<td><b>&nbsp;Unit</b></td>
+
+<td><b>&nbsp;Description</b></td>
+</tr>
+
+<tr>
+<td>&nbsp;s</td>
+
+<td>&nbsp;1/&Aring;</td>
+
+<td>&nbsp;resolution</td>
+</tr>
+
+<tr>
+<td>&nbsp;v</td>
+
+<td>&nbsp;keV</td>
+
+<td>&nbsp;accelerating voltage</td>
+</tr>
+
+<tr>
+<td>&nbsp;Cs</td>
+
+<td>&nbsp;mm</td>
+
+<td>&nbsp;spherical aberration</td>
+</tr>
+
+<tr>
+<td>&nbsp;Cc</td>
+
+<td>&nbsp;mm</td>
+
+<td>&nbsp;chromatic abbe ration</td>
+</tr>
+
+<tr>
+<td>&nbsp;Q</td>
+
+<td></td>
+
+<td>&nbsp;amplitude contrast [0-1]</td>
+</tr>
+
+<tr>
+<td>&nbsp;dE</td>
+
+<td>&nbsp;eV</td>
+
+<td>&nbsp;time variation of electron beam energy from the average</td>
+</tr>
+
+<tr>
+<td>&nbsp;dI</td>
+
+<td>&nbsp;ppm</td>
+
+<td>&nbsp;time variation of object lens current from the average</td>
+</tr>
+
+<tr>
+<td>&nbsp;dF</td>
+
+<td>&nbsp;&Aring;</td>
+
+<td>&nbsp;vertical sinusoidal motion amplitude</td>
+</tr>
+
+<tr>
+<td>&nbsp;dR</td>
+
+<td>&nbsp;&Aring;</td>
+
+<td>&nbsp;horizontal drift amplitude</td>
+</tr>
+
+<tr>
+<td>&nbsp;dZ</td>
+
+<td>&nbsp;&Aring;</td>
+
+<td>&nbsp;defocus, positive for under-focus</td>
+</tr>
+
+<tr>
+<td>&nbsp;B</td>
+
+<td>&nbsp;&Aring;<sup>2</sup></td>
+
+<td>&nbsp;envelope decay parameter, exp(-B*s^2)</td>
+</tr>
+
+<tr>
+<td>&nbsp;a</td>
+
+<td>&nbsp;mrad</td>
+
+<td>&nbsp;illumination angle</td>
+</tr>
+
+<tr>
+<td>&nbsp;lambda(v)</td>
+
+<td>&nbsp;&Aring;</td>
+
+<td>&nbsp;electron wavelength, automatically computed from voltage</td>
+</tr>
+
+<tr>
+<td>&nbsp;gamma(s,v,Cs,dZ)</td>
+
+<td></td>
+
+<td>&nbsp;2*pi*(2.5e6*Cs*lambda(v)^3*s^4-dZ*lambda(v)*s^2/2)</td>
+</tr>
+
+<tr>
+<td>&nbsp;ctf(s,v,Cs,dZ,Q)</td>
+
+<td></td>
+
+<td>&nbsp;sqrt(1-Q*Q)*sin(gamma(s,v,Cs,dZ))-Q*cos(gamma(s,v,Cs,dZ))</td>
+</tr>
+
+<tr>
+<td>&nbsp;Gsc(s,v,Cs,dZ,a)</td>
+
+<td></td>
+
+<td>&nbsp;spatial coherence decay: exp(-(pi*a*(1.0e7*Cs*lambda(v)^2*s^3-dZ*s))^2/1e6)</td>
+</tr>
+
+<tr>
+<td>&nbsp;Gtc(s,v,Cc,dE)</td>
+
+<td></td>
+
+<td>&nbsp;temporal energy spread decay: exp(-1.0e8*(pi*Cc*lambda(v)*s^2*dE/v)^2/(16*ln(2)))</td>
+</tr>
+
+<tr>
+<td>&nbsp;Gol(s,v,Cc,dE)</td>
+
+<td></td>
+
+<td>&nbsp;temporal lens current spread decay: exp(-1.0e2*(pi*Cc*lambda(v)*s^2*dI)^2/(4*ln(2)))</td>
+</tr>
+
+<tr>
+<td>&nbsp;Glm(s,v,dF)</td>
+
+<td></td>
+
+<td>&nbsp;vertical motion decay: j0(pi*dF*lambda(v)*s*s)</td>
+</tr>
+
+<tr>
+<td>&nbsp;Gtm(s,dR)</td>
+
+<td></td>
+
+<td>&nbsp;horizontal drift decay: sinc(pi*s*dR)</td>
+</tr>
+
+<tr>
+<td>&nbsp;sinc(s)</td>
+
+<td></td>
+
+<td>&nbsp;sinc function: sin(s)/s</td>
+</tr>
+
+<tr>
+<td>&nbsp;j0(s)</td>
+
+<td></td>
+
+<td>&nbsp;Bessel function of the first kind, order 0: <a href="http://lib-www.lanl.gov/numerical/bookcpdf/c6-5.pdf">(57568490574.0+s*s*(-13362590354.0+s*s*(651619640.7+s*s*(-11214424.18+s*s*(77392.33017+s*s*(-184.9052456))))))
+/(57568490411.0+s*s*(1029532 985.0+s*s*(9494680.718+s*s*(59272.64853+s*s*(267.8532712+s*s*1.0)))))</a></td>
+</tr>
+</table></center>
+
+<center>
+<p><b>In addition to the symbols mentioned above, almost all the <a href="http://math.hws.edu/javamath/applets/index.html">common
+function, operators, constants</a> could be used in the function definition
+if you choose to plot you own function</b></center>
+
+<center><table BORDER COLS=10 WIDTH="95%" >
+<tr>
+<td>
+<center>sin</center>
+</td>
+
+<td>
+<center>cos</center>
+</td>
+
+<td>
+<center>tan</center>
+</td>
+
+<td>
+<center>cot</center>
+</td>
+
+<td>
+<center>sec</center>
+</td>
+
+<td>
+<center>csc</center>
+</td>
+
+<td>
+<center>arcsin</center>
+</td>
+
+<td>
+<center>arccos</center>
+</td>
+
+<td>
+<center>arctan</center>
+</td>
+
+<td>
+<center>abs</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>sqrt</center>
+</td>
+
+<td>
+<center>cubert</center>
+</td>
+
+<td>
+<center>exp</center>
+</td>
+
+<td>
+<center>ln</center>
+</td>
+
+<td>
+<center>log2</center>
+</td>
+
+<td>
+<center>log10</center>
+</td>
+
+<td>
+<center>trunc</center>
+</td>
+
+<td>
+<center>round</center>
+</td>
+
+<td>
+<center>floor</center>
+</td>
+
+<td>
+<center>ceiling</center>
+</td>
+</tr>
+</table></center>
+
+<center><table BORDER COLS=7 WIDTH="95%" >
+<tr>
+<td>
+<center>+</center>
+</td>
+
+<td>
+<center>-</center>
+</td>
+
+<td>
+<center>*</center>
+</td>
+
+<td>
+<center>/</center>
+</td>
+
+<td>
+<center>^</center>
+</td>
+
+<td>
+<center>**</center>
+</td>
+
+<td>
+<center>!</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>?:</center>
+</td>
+
+<td>
+<center>&lt;</center>
+</td>
+
+<td>
+<center>&lt;=</center>
+</td>
+
+<td>
+<center>=</center>
+</td>
+
+<td>
+<center>></center>
+</td>
+
+<td>
+<center>>=</center>
+</td>
+
+<td>
+<center>&lt;></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><i>and</i></center>
+</td>
+
+<td>
+<center><i>or</i></center>
+</td>
+
+<td>
+<center><i>&nbsp;not</i></center>
+</td>
+
+<td COLSPAN="4">
+<center>sum(sumationVariable, start, end, expression)</center>
+</td>
+</tr>
+</table></center>
+
+<center><table BORDER COLS=2 WIDTH="95%" NOSAVE >
+<tr NOSAVE>
+<td NOSAVE>
+<center>pi</center>
+</td>
+
+<td>
+<center>e</center>
+</td>
+</tr>
+</table></center>
+
+<center>
+<p><b>This ctf simulation applet is written by <a href="http://jiang.bio.purdue.edu">Wen
+Jiang</a> with help of the excellent <a href="http://math.hws.edu/javamath/index.html">Java
+Components for Mathematics</a>.</b>
+<p><form><input type="button" name="start" value="Start Applet" onClick='open("ctf/ctfapplet.html","ctfapplet","menubar=yes,location=no,toolbar=no,resizable=yes,scrollbars=yes")'><input type="button" name="close" value="Close" onClick="window.close()"></form></center>
+
